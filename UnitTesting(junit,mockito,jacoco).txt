@@ -1,0 +1,685 @@
+Unit Testing
+------------
+The process of testing individual components of our application is called as Unit Testing.
+			or
+The process of testing Unit amount of work is called as Unit Testing
+Example
+----------
+Below method we will test with both valid and invalid credentials to understand method behaviour in both situations.
+
+public class UserDaoImpl implements UserDao{
+
+     public boolean findByUnameAndPwd(String uname, String pwd){
+           //logic to execute query
+           if(isExists){
+                   return true;
+           }else{
+                   return false;
+           }
+     }
+}
+
+findByUnameAndPwd("admin","admin@123"); --valid inputs
+findByUnameAndPwd("ashok","ashok@IT"); -- invalid inputs
+findByUnameAndPwd(null,null); --- invalid inputs
+
+Advantages of Unit Testing
+--------------------------
+-> We can identify method behaviour in postive and negative scenarios
+-> Bugs will be identified at development stage only
+-> We can provide bug free & Quality code for higher environments
+-> Unit Testing will improve developer confidence
+
+Unit testing we can do in 2 ways
+--------------------------------
+1) Manual Unit Testing
+2) Automated Unit Testing
+-> Debugging we can use to understand method behaviour and find bugs in code
+-> We can't do debugging for the same method on daily basis, it is time consuming processs.
+-> To save our time we will perform automated unit testing for our code
+-> To automate Unit Testing we have JUnit framework.
+What is Junit?
+--------------
+-> Junit is an open source framework which is used to perform Unit    Testing for java projects.
+-> Junit framework developed by 'Enrich Gamma'
+-> The Current version of Junit is 5.x
+-> To use Junit in our project we should download and add 
+   Junit jars to build path or we need to configure dependency
+-> JUnit is an open source framework 
+-> Junit is used to perform Unit testing for java applications
+-> The current version of JUnit is 5.x version
+-> Junit 4.x version onwards we have annotations support to perform    Unit testing
+
+Junit Annotations
+-----------------
+Below annotations we are going to use in Unit Test class to perform Unit Testing
+
+@BeforeClass
+@AfterClass
+
+@Before
+@After
+
+@Test
+
+Junit Assertions
+----------------
+Assertions are used to compare expected and actual results and will decide test case is passed or failed.
+
+Below are the assertions methods to validate results
+
+assertEquals(actual, expected)
+assertSame(actual,expected)
+assertNotNull(obj)
+assertNull(obj)
+
+Steps to develop first application using JUnit
+----------------------------------------------
+1) Create Maven Project
+  -> When we create maven project we can below folders
+	
+	src/main/java (Here we will write business classes)
+	src/test/java (Here we will write test classes)
+
+2) Add JUnit dependency in pom.xml file
+
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13</version>
+    <scope>test</scope>
+</dependency>
+
+3) Create Business class with methods
+4) Create Unit test class for testing business class methods
+5) Use Junit annotations & assertions in Unit test class
+6) Run Unit class as Junit Test class 
+
+Note: After Unit testing is completed, junit will generate report
+
+-> Junit generated report contains summary of Unit testing 
+	
+	1)How many test methods executed
+	2)How many passed
+	3)How many failed
+	4)Reason for failures 
+
+12-Jun-2020
+----------------------------------------------J
+--> Junit is an open source framework
+--> Junit is used to perform unit testing for java apps
+--> We have annotations in junit to perform UT
+--> We have Assertions in JUnit to validate results
+
+Annotations
+-----------
+@Test : It is used to represent java method as a JUnit method
+-> For one business method we can write multiple unit test methods
+
+@BeforeClass & @AfterClass
+---------------------------
+-> These two are method level annotations
+-> @BeforeClass annotated method will execute before first test case (I will create target class obj here)
+-> @AfterClass annotated method will execute after last test case (I will nullify target class obj here)
+
+------------------Target Class-------------------
+package com.ashokit;
+
+public class Calculator {
+
+	public Integer add(Integer a, Integer b) {
+		return a + b;
+	}
+
+	public Integer mul(Integer a, Integer b) {
+		return a * b;
+	}
+}
+------------------Unit Test Class----------------
+package com.ashokit;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
+public class CalculatorTest {
+
+	private static Calculator calc = null;
+
+	@BeforeClass
+	public static void init() {
+		calc = new Calculator();
+	}
+
+	@Test
+	public void testAdd_01() {
+		Integer actualResult = calc.add(10, 20);
+		Integer expectedResult = 30;
+		assertEquals(expectedResult, actualResult);
+	}
+
+	@Test
+	public void testAdd_02() {
+		Integer actual = calc.add(50, 100);
+		Integer expected = 150;
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testAdd_03() {
+		Integer actual = calc.add(100, 200);
+		Integer expected = 300;
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testMul_01() {
+		Integer actual = calc.mul(2, 5);
+		Integer expected = 10;
+		assertEquals(expected, actual);
+	}
+
+	@AfterClass
+	public static void destory() {
+		calc = null;
+	}
+}
+---------------------------------------------------
+13-Jun-2020
+----------------------------------------------------------------
+@Test : To represent method as Junit method
+@BeforeClass    : To execute method before first test case execution
+@AfterClass : To execute method after last test case execution
+@Ignore : To skip method from current execution
+
+-> For business class methods we are going to write Junit methods
+-> For one business method we can write multiple unit  test methods
+-> When we are performing Unit testing, sometime we need to except Exceptions from target class method.
+-> When we are expecting an exception, we will use expected attribute in @Test annoation
+-----------------------------------------------------------------
+public Integer div(Integer a, Integer b) {
+		return a / b;
+}
+----------------------------------------------------------------
+@Test(expected = ArithmeticException.class)
+public void testDiv_02() {
+		calc.div(10, 0);
+}
+---------------------------------
+
+-> We can use timeout attribute in @Test annotation
+-> timeout attribute is used check target method execution completing within given amount of time or not
+-> If target method execution is taking more time than given value then then it will be terminated abnormally
+
+@Test(timeout = 1000)
+public void testDiv_03() {
+		calc.div(10, 2);
+}
+
+Unit Testing in Realtime Project
+--------------------------------
+-> In Realtime every application will be developed using MVC architecture
+
+-> IN application we will have below layers
+
+		a) Data Acces Layer (DAO)
+		b) Business/ServiceLayer
+		c) Web Layer
+		d) UI layer
+
+ -> JUnit we can use only to perform java classes unit testing
+ Note : We can't use Junit for jsp testing
+
+JUnit with Mocking
+------------------
+What is Unit Testing ?
+What is Junit ?
+Annotations available in JUnit
+Assert methods available in JUnit
+JUnit application development
+
+What is Mocking?
+Why we need mocking?
+What are the Mock frameworks available?
+Unit testing using mock frameworks
+
+When we are developing an application, we will use layered architecture (MVC) 
+
+In application we will be having below layers
+---------------------------------------------
+1) presentation layer   (User interface compoents)
+2) web layer (Controller components)
+3) business layer (Service components)
+4) persistence layer (Dao components)
+
+In the above four layer, we are going to use Junit to test last 3 layers code.
+
+Note : We can't test Presentation components by using JUnit
+
+
+
+
+In Project 2 developers are working
+
+John and Smith
+
+John is working on a story called HIS-134
+Smith is working on a story called HIS-135
+
+John changes are related to service class method impl
+Smith changes are related to dao class method impl
+
+John completed his service layer method implementation
+Smith changes are not yet completed for dao impl
+
+Can John perform Unit testing for his changes or not?
+-----------------------------------------------------
+No, he can't perform because john implemented code is dependent on dao method implementation which is not yet ready.
+
+Options available for john
+--------------------------
+-> complete dao method implementation
+-> wait for smith to complete dao implementation
+
+Note : In this situation John has to use mocking
+
+Mocking is the process of creating substitute/alternate object for real object.
+
+Mocking is the process of imitating something
+
+When to use Mocking
+-------------------
+1) If dependent components are not ready
+
+2) To isolate our component for unit testing
+
+There are several mock frameworks available in market
+-----------------------------------------------------
+Mock frameworks are categorized into 2 types
+
+1) Proxy Based Mock Frameworks
+	Ex : Easy Mock and Mockito
+
+2) Byte Code Manipulation Based Mock Frameworks
+	Ex : Power Mock and JMockito	
+
+Limitations of Proxy Based Frameworks
+-------------------------------------
+-> Doesn't support for private methods mocking
+
+-> Doesn't support for final methods mocking
+
+-> Doens't support for static methods mocking
+
+-> Doesn't support for final class mocking
+
+To avoid the above limitations we are going to use Byte Code Manipulation Based Mock Frameworks.
+
+
+Steps to develop application using Junit and EasyMock
+-----------------------------------------------------
+Junit ---> Unit Testing Framework
+
+EasyMock ---> To perform Mocking
+
+1) Create simple maven project
+
+2) Add below dependencies in pom.xml file
+	1) Junit
+	2) EasyMock
+
+3) Create Dao interface (only interface no implemenation)
+    (required methods we will create as abstract)
+
+4) Create Service interface & implementation
+     (as part service method we will call dao method)
+
+5) Create Unit test class for Service class using JUnit
+
+
+
+
+Dependencies
+------------
+<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>4.1</version>
+			<scope>test</scope>
+		</dependency>
+</dependencies>
+
+
+15-Jun-2020
+-------------------------------------------------------------------
+Mocking is a process of creating substitube object for real object
+
+Mocking is very important as part of Unit testing
+
+To test our component in isolated manner we will use Mocking
+
+There are 2 types mock frameworks are available
+
+	1)Proxy Based (Ex: Easy Mock, Mockito)
+
+	2)Byte Code Manipulation (Ex: PowerMock & JMockit)
+
+
+Today's session : Code Coverage using jacocco
+
+
+-> In Every application we will write business methods which contains business logic
+
+-> As a developer it is our responsibility to make sure business logic is working as expected.
+
+-> To make sure business logic is working as expected we will perform through unit testing  with help of Junit and Mocking.
+
+-> After Unit Testing is completed, we should verify which lines of code is tested and which lines of code is not tested in Unit Testing.
+
+-> If we are able to get the details of the code whihc is not tested in unit testing then we can test those missed lines of code also by writing better Unit Test scenarios.
+
+-> To get these details we wil generate code coverage report
+
+What is Code Coverage?
+----------------------
+Code coverage is a process of verifying which lines of code is executed and which lines of code is not executed in unit testing.
+
+-> To generate code coverage report we have several tools in the market
+
+	Ex: Cobertura, Jacocco etc...
+
+Note: As per industry standard we should maintain minimum 85 % of code coverage.
+
+
+Steps to perform Code Coverage in Project
+-----------------------------------------
+1) After Implemenging Unit test methods, add Jacocco plugin in pom.xml file
+
+Note: plugins we will add in <build/> section of pom.xml file
+
+2) After adding jacocco plug-in  in build section, execute maven project with test goal.
+
+Note: jacocco plugin will execute after maven test goal is executed
+
+What is maven test goal?
+------------------------
+Maven test goal is used to execute unit test methods available in project
+
+	mvn test
+
+
+17-Jun-2020
+-------------------------------------------------
+What is Code Coverage?
+-----------------------
+It is used verify which lines of code is covered and which lines of code is not covered in Unit Testing.
+
+-> To Perform Code Coverage we will use Jacoco
+
+-> Jacoco is a maven plugin, just we need to add this plugin in project pom.xml file
+-> After adding this plugin, we need to build our project using maven goals.
+-> In Maven we have several goals like below
+		
+		a)clean
+		b)compile
+		c)test
+		d)package
+		e)install etc...
+-> In the above goals, jacoco will be assigned with Unit Testing
+-> Once project unit testing is executed, then jacoco plugin will analyze unit test execution and it will generate code coverage report.
+
+Note : In code coverage report, jacoco will display percentage for each method avalable in a class.
+-> If code coverage percentag is less we should improve our unit test scenarios.
+-> As per industry standard, we should maintain minimum 85% of coverage.
+
+18-Jun-2020
+-----------------------------------------------------
+-> Jacoco is a plugin which is used to generate code coverage report
+-> To generate code coverage report using jacoco we should add that plugin in our pom.xml file
+-> Jacoco plugin will be executing after maven test phase is executed
+-> maven test goal or phase is used to run test cases availabe in project
+-> Test cases we will implement using JUnit framework
+-> As part of Unit testing we will use Mock objects
+-> Mock object is a substituete for real objects
+-> Mock objects are used for isolated testing
+-> With Code coverage report, we can see which lines of code is not executed as part of unit testing
+-> Our unit testing scenarios can be improved with this coverage report.
+---------------------------------------------------------------------
+
+-> In project, we should perform unit testing for the clases which contains business logic
+
+		a)Controller
+		b)Service
+		c)Dao
+		d)Utility classes (Pwd Encryptor & Decryptor, Mail Sender, DateUtils etc...)
+
+-> We can avoid unit testing for below classes
+		
+		1)Java Beans
+		2)Pojo
+		3)Entity
+		4)Configuration
+
+-> We can avoid/exclude the above classes from Code Coverage report bcz those classes will not contain any business logic.
+
+Note: By default jacoco will consider all the classes available in project
+
+Syntax to exclude a package from Jacoco
+---------------------------------------------
+<configuration>
+  <excludes>
+	<exclude>**com/ashokit/model/**</exclude>
+  </excludes>
+</configuration>
+
+Note: If we exclude a package, all the classes available in that pkg will be excluded.
+
+Syntax to exclude a specific class from jacoco
+----------------------------------------------
+<exclude>**com/ashokit/model/User**</exclude>
+
+Note: We can't exclude specific methods available in class.
+Note: We shouldn't exclude the classes from coverage which contains business logic (service, dao, controller & utility classes)
+
+-> We used EasyMock framework to create mock objects
+-> Easy Mock framework belongs to Proxy Based Mocking Framework
+
+Proxy Based Mock frameworks having below drawbacks
+--------------------------------------------------
+-> No support for private methods
+-> No support for static methods
+-> No support for final methods	
+-> No support for final classes
+-> To avoid above drawbacks we will use Byte code manipulation based Mock frameworks (Ex: Power Mock, JMockit)
+
+19-Jun-2020
+----------------------------------------------------------------
+Power Mock
+----------
+-> It is one of the powerful mocking framework available in market
+-> Using Power Mock framework we can create Mock objects for Unit Testing
+-> Power Mock belongs to Byte Code Manipulation Based Mocking Framework.
+-> To work with Unit Testing using power mock we should add below dependencies in pom.xml file
+
+<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+</dependencies>
+
+-> POJO & POJI
+-> Plain Old Java Object
+--------------------------
+-> The class which is not extending and not implementing any technolgy or framework related classes and interfaces is called as Pojo.
+-> Pojo can be compiled by using underlying JDK.
+
+
+-> Plain Old Java Interface
+----------------------------
+-> The interface which is not extending  any technolgy or framework related interfaces is called as Poji.
+
+-> Poji can be compiled by using underlying JDK.
+
+
+Mocking by using PowerMock
+--------------------------
+		
+	ContactDao  mockDao = PowerMock.mock(ContactDao.class);
+	
+	when(mockDao.findNumberByName("Raj"))
+		    .thenReturn(797979l);
+
+	when(mockDao.findNumberByName("Jon")
+		    .thenReturn(66996969l);
+
+	when(mockDao.findAll())
+		    .thenReturn(null);
+
+	when(mockDao.findById(101)
+		    .thenThrow(new NullPointerException());
+	
+
+Today's session : Working with PowerMock
+-----------------------------------------
+20-Jun-2020
+-------------------------------------------
+-> Power Mock or Power Mockito is a mocking framwork belongs to byte code manipulation category
+
+-> It is superior to Proxy Based Mocking frameworks
+
+Syntax
+-------
+	ContactDao dao = PowerMockito.mock(ContactDao.class);
+	s.o.p(dao.getClass().getName());
+
+-> With  the above code mock object will be created in the runtime
+
+-> Once Mock object is created we need to mock methods according to our requirement
+
+	PowerMockito.when(methodCall()).thenReturn(returnVal);
+	PowerMockito.when(methodCall()).thenThrow(Exception e)
+	PowerMockito.when(methodCall()).thenCallRealMethod();
+
+Do Nothing for methods which are returning void
+------------------------------------------------
+
+	@Test
+	public void testDoProcess() {
+		UserService mockService = PowerMockito.mock(UserService.class);
+		try {
+			PowerMockito.doNothing().when(mockService, "pushMsgToKafkaTopic", anyString());
+			mockService.doProcess();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+22-Jun-2020
+---------------------------------------------------------------------
+-> PowerMock is a byte code manipulation based mocking framework
+
+-> Power Mock is used to create Mock objects in Unit Testing
+
+	//Creating Mock object
+	UserService mock = PowerMockito.mock(UserService.class);
+	
+	//Mocking methods
+	PowerMockito.when(T methodCall).thenReturn(Object obj);
+
+	PowerMockito.when(T methodCall).thenThrow(Exception e);
+
+	PowerMockito.doNothing().when(T methodCall);
+
+Mocking Private Methods
+-----------------------
+-> As per OOP principles, private methods we should access with in the class
+
+-> By using Reflection API, we can access private methods outside of class also (By violating oops principles)
+
+-> Power Mock will support for mocking private methods also
+
+Mocking Private Method
+---------------------
+PowerMockito.doReturn(Object obj)
+	    .when(T spyObj, String methodName, Object... arguments)
+
+Mocking Static methods
+----------------------
+public class Demo{
+
+   public static Integer findIdByName(String name){
+       //logic
+   }
+}
+-------------------------------------------------
+mockStatic(Demo.class);
+PowerMockito.when(Demo.findIdByName(anyString())
+	    .thenReturn(101);
+
+What is the difference between Mock Object & Spy object ?
+---------------------------------------------------------
+-> When we create mock object, we have to define behaviour for all the methods
+	
+Syntax
+-------
+Object mock = PowerMockito.mock(T class);
+-> When we create spy object, no need to mock all methods. Spy means partially Mocked object.
+-> When we create Spy object, we can mock only the methods which are really required to be mocked.
+-> If we don't mock any method in spy object, then real method will be executed (that's why it is called as Partially Mocked Object).
+
+Syntax
+------
+	Object spy = PowerMockito.spy(T class);
+
+Interview Questions
+--------------------
+1) What is Unit Testing?
+2) How you are doing Unit Testing?
+3) What is the difference between Unit Testing & Integration Testing?
+4) What is JUnit?
+5) Tell me few annotations you have used in JUnit?
+6) What are the attributes avaiable for @Test annotation
+7) Have you ever used Mocking in Unit Testing?
+8) Which framework you have used for Mocking?
+9) What is the difference between Easy Mock & Power Mock ?
+10) Could you please write sample code to create Mock object?
+11) Can we mock private methods ?
+12) Could you please write sample code to mock private method?
+13) What is Code Coverage?
+14) How much coverage you are going to maintain for your code?
+15) Which tool you are using for code coverage?
+16)What is the difference between Mock object & Spy object ?
+
+
+
+
+
+
+
+
